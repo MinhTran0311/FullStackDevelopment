@@ -4,14 +4,17 @@ import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
 import { useEffect } from "react";
 import personService from "./services/persons";
-import Notification from "./components/Notification"
+import Notification from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newPhone, setNewPhone] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+  const [notiMessage, setNotiMessage] = useState({
+    message: "",
+    isSuccess: false,
+  });
 
   const getPersons = () => {
     personService
@@ -19,7 +22,7 @@ const App = () => {
       .then((initialPersons) => setPersons(initialPersons))
       .catch((error) => {
         console.error(error);
-        alert("An error occurred while getting the persons");
+        showMessage("An error occurred while getting the persons", false);
       });
   };
   useEffect(getPersons, []);
@@ -53,10 +56,7 @@ const App = () => {
     personService
       .createPerson(person)
       .then((returnedPerson) => {
-        setSuccessMessage(`Added ${returnedPerson.name}`);
-        setTimeout(() => {
-          setSuccessMessage(null);
-        }, 5000);
+        showMessage(`Added ${returnedPerson.name}`, true);
         setPersons(persons.concat(returnedPerson));
         setNewName("");
         setNewPhone("");
@@ -64,13 +64,24 @@ const App = () => {
       })
       .catch((error) => {
         console.error(error);
-        alert("An error occurred while creating the person");
+        showMessage("An error occurred while creating the person", false);
       });
   };
 
+  const showMessage = (message, isSuccess) => {
+    setNotiMessage({
+      message: message,
+      isSuccess: isSuccess,
+    });
+    setTimeout(() => {
+      setNotiMessage({ ...notiMessage, message: null });
+    }, 5000);
+  };
+
   const onDeletePerson = (id) => {
+    const name = persons.find((e) => e.id === id).name;
     const confirmDelete = window.confirm(
-      "Delete " + persons.find((e) => e.id === id).name + "?"
+      "Delete " + name + "?"
     );
 
     if (confirmDelete) {
@@ -81,7 +92,7 @@ const App = () => {
         })
         .catch((error) => {
           console.error(error);
-          alert("An error occurred while deleting the person");
+          showMessage("Information of " + name + " has been removed from server", false);
         });
     }
   };
@@ -98,7 +109,7 @@ const App = () => {
       })
       .catch((error) => {
         console.error(error);
-        alert("An error occurred while updating the person");
+        showMessage("Information of " + person.name + " has been removed from server", false);
       });
   };
 
@@ -113,7 +124,7 @@ const App = () => {
         searchTerm={searchTerm}
         handlerFilterChange={handlerFilterChange}
       />
-      <Notification message={successMessage} />
+      <Notification notiMessage={notiMessage} />
       <h3>Add a new</h3>
       <PersonForm
         addPerson={addPerson}
