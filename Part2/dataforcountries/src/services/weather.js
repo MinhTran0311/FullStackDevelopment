@@ -1,6 +1,6 @@
 import axios from "axios";
 const baseUrl = "https://api.openweathermap.org/data/2.5/weather";
-const appid = "e54637404c682515a0e81bd490d89622";
+const appid = import.meta.env.VITE_WEATHER_API_KEY;
 
 const getWeatherByCapital = (latlng) => {
   const request = axios.get(

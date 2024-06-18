@@ -1,5 +1,4 @@
 const WeatherInfo = ({ weatherData, capital }) => {
-  console.log(weatherData.weather.icon);
   if (!weatherData) return null;
   return (
     <div>
