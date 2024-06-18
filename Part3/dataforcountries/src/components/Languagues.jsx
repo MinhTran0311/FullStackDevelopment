@@ -1,7 +1,7 @@
 const Languages = ({ languages }) => {
   return (
     <>
-      <h3>languages</h3>
+      <h3>languages:</h3>
 
       <ul>
         {Object.entries(languages).map(([code, language]) => (
