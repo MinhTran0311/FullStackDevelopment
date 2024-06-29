@@ -63,8 +63,7 @@ const App = () => {
         event.target.reset();
       })
       .catch((error) => {
-        console.error(error);
-        showMessage("An error occurred while creating the person", false);
+        showMessage(error.response.data.error, false);
       });
   };
 
@@ -80,9 +79,7 @@ const App = () => {
 
   const onDeletePerson = (id) => {
     const name = persons.find((e) => e.id === id).name;
-    const confirmDelete = window.confirm(
-      "Delete " + name + "?"
-    );
+    const confirmDelete = window.confirm("Delete " + name + "?");
 
     if (confirmDelete) {
       personService
@@ -92,7 +89,10 @@ const App = () => {
         })
         .catch((error) => {
           console.error(error);
-          showMessage("Information of " + name + " has been removed from server", false);
+          showMessage(
+            "Information of " + name + " has been removed from server",
+            false
+          );
         });
     }
   };
@@ -109,7 +109,7 @@ const App = () => {
       })
       .catch((error) => {
         console.error(error);
-        showMessage("Information of " + person.name + " has been removed from server", false);
+        showMessage(error.response.data.error, false);
       });
   };
 

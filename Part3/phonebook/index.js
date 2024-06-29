@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express')
 const morgan = require("morgan");
 const cors = require("cors");
 require("dotenv").config();
@@ -17,17 +17,6 @@ app.use(
   )
 );
 app.use(cors());
-const errorHandler = (error, request, response, next) => {
-  console.error(error.message);
-
-  if (error.name === "CastError") {
-    return response.status(400).send({ error: "malformatted id" });
-  }
-
-  next(error);
-};
-
-app.use(errorHandler);
 
 app.get("/", (request, response) => {
   response.send("<h1>Hello World!</h1>");
@@ -98,12 +87,6 @@ app.post("/api/persons", (request, response, next) => {
     });
   }
 
-  // if (persons.some((p) => p.name === body.name)) {
-  //   return response.status(400).json({
-  //     error: "name must be unique",
-  //   });
-  // }
-
   const person = new Person({
     name: body.name,
     number: body.number,
@@ -114,23 +97,45 @@ app.post("/api/persons", (request, response, next) => {
     .then((savedPerson) => {
       response.json(savedPerson);
     })
+    .catch((error) => {
+      return next(error);
+    });
+});
+
+app.put("/api/persons/:id", (request, response, next) => {
+  const { name, number } = request.body;
+
+  Person.findByIdAndUpdate(
+    request.params.id,
+    { name, number },
+    { new: true, runValidators: true, context: "query" }
+  )
+    .then((updatedPerson) => {
+      response.json(updatedPerson);
+    })
     .catch((error) => next(error));
 });
 
-app.put('/api/persons/:id', (request, response, next) => {
-  const body = request.body
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: "unknown endpoint" });
+};
 
-  const person = {
-    name: body.name,
-    number: body.number,
+// handler of requests with unknown endpoint
+app.use(unknownEndpoint);
+
+const errorHandler = (error, request, response, next) => {
+  console.error("middle", error.name);
+
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "malformatted id" });
+  } else if (error.name === "ValidationError") {
+    return response.status(400).json({ error: error.message });
   }
 
-  Person.findByIdAndUpdate(request.params.id, person, { new: true })
-    .then(updatedPerson => {
-      response.json(updatedPerson)
-    })
-    .catch(error => next(error))
-})
+  next(error);
+};
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT;
 app.listen(PORT, "0.0.0.0", () => {
