@@ -31,7 +31,7 @@ app.get('/api/persons', (request, response, next) => {
     .catch((error) => next(error))
 })
 
-app.get('/api/info', (request, response, next) => {
+app.get('/info', (request, response, next) => {
   var datetime = new Date()
   var options = {
     weekday: 'short',
