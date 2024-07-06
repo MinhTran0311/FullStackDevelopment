@@ -140,6 +140,7 @@ describe("user tests", () => {
       .expect('Content-Type', /application\/json/)
 
     const usersAtEnd = await helper.usersInDb()
+
     assert(result.body.error.includes('username and password must be at least 3 characters long'))
 
     assert.strictEqual(usersAtEnd.length, usersAtStart.length)
