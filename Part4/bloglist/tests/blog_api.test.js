@@ -173,6 +173,36 @@ describe("blog tests", () => {
     });
   });
 
+  describe("updating a blog", () => {
+    test("succeeds with valid data and token", async () => {
+      const { token } = await helper.getToken();
+      const blogsAtStart = await helper.blogsInDb();
+      const blogToUpdate = blogsAtStart[0];
+
+      const updatedBlogData = {
+        title: blogToUpdate.title,
+        author: blogToUpdate.author,
+        url: blogToUpdate.url,
+        likes: blogToUpdate.likes + 10,
+      };
+
+      const response = await api
+        .put(`/api/blogs/${blogToUpdate.id}`)
+        .set("Authorization", `Bearer ${token}`)
+        .send(updatedBlogData)
+        .expect(200)
+        .expect("Content-Type", /application\/json/);
+
+      assert.strictEqual(response.body.likes, blogToUpdate.likes + 10);
+
+      const blogsAtEnd = await helper.blogsInDb();
+      const updatedBlog = blogsAtEnd.find(
+        (blog) => blog.id === blogToUpdate.id
+      );
+      assert.strictEqual(updatedBlog.likes, blogToUpdate.likes + 10);
+    });
+  });
+
   after(async () => {
     await mongoose.connection.close();
   });
