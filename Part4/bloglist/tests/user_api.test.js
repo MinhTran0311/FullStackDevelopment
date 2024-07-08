@@ -146,8 +146,6 @@ describe("user tests", () => {
     assert.strictEqual(usersAtEnd.length, usersAtStart.length)
   })
 
-
-
   after(async () => {
     await mongoose.connection.close();
   });
