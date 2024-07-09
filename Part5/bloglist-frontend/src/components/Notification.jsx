@@ -1,6 +1,6 @@
 const Notification = (props) => {
-  if (props.notiMessage.message === null || props.notiMessage.message === "") {
-    return null;
+  if (props.notiMessage.message === null || props.notiMessage.message === '') {
+    return null
   }
 
   const notificationStyle = {
@@ -11,11 +11,11 @@ const Notification = (props) => {
     borderRadius: '5px',
     padding: '10px',
     marginBottom: '10px'
-  };
+  }
 
   return (
     <div style={notificationStyle}>{props.notiMessage.message}</div>
-  );
-};
+  )
+}
 
-export default Notification;
+export default Notification
