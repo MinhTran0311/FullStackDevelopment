@@ -1,7 +1,5 @@
-const jwt = require('jsonwebtoken')
 const router = require('express').Router()
 const Blog = require('../models/blog')
-const User = require('../models/user')
 const userExtractor = require('../utils/middleware').userExtractor
 
 router.get('/', async (request, response) => {
@@ -18,11 +16,11 @@ router.post('/', userExtractor, async (request, response) => {
 
   if (!user ) {
     return response.status(403).json({ error: 'user missing' })
-  }  
+  }
 
   if (!blog.title || !blog.url ) {
     return response.status(400).json({ error: 'title or url missing' })
-  }   
+  }
 
   blog.likes = blog.likes | 0
   blog.user = user
