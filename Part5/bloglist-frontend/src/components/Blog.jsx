@@ -36,14 +36,14 @@ const Blog = ({ isAuthor, blog, updateBlog, deleteBlog }) => {
 
   if (!isShow){
     return (
-      <div style={blogStyle}>
+      <div style={blogStyle} className="blog">
         {blog.title} {blog.author} <button onClick={toggleVisibility}>{isShow ?  'hide' : 'view'}</button>
       </div>
     )
   }
 
   return (
-    <div style={blogStyle}>
+    <div style={blogStyle} className="blog">
       <p>
         title: {blog.title} <button onClick={toggleVisibility}>{isShow ?  'hide' : 'view'}</button>
       </p>
