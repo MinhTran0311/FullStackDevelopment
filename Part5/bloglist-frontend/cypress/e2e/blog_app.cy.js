@@ -74,10 +74,8 @@ describe('Blog app', function () {
       })
 
       it('Other users cannot see the delete button', function () {
-        // Log out the current user
         cy.get('#logout-button').click()
 
-        // Create a new user
         const newUser = {
           name: 'Another User',
           username: 'anotheruser',
@@ -86,7 +84,6 @@ describe('Blog app', function () {
         cy.request('POST', `${Cypress.env('BACKEND')}/users/`, newUser)
         cy.login({ username: 'anotheruser', password: 'anotherpassword' })
 
-        // Verify that the new user cannot see the delete button
         cy.contains('Test blog Test author').contains('view').click()
         cy.contains('Test blog').parent().should('not.contain', 'remove')
       })
@@ -109,7 +106,6 @@ describe('Blog app', function () {
         url: 'http://thirdblog.com',
       })
 
-      // Make sure the blogs are ordered by likes
       cy.get('.blog').eq(0).should('contain', 'First blog Author 1')
       cy.get('.blog').eq(1).should('contain', 'Second blog Author 2')
       cy.get('.blog').eq(2).should('contain', 'Third blog Author 3')
@@ -136,7 +132,6 @@ describe('Blog app', function () {
         expectedLikes: '1',
       })
 
-      // Check the order again after liking the second blog
       cy.get('.blog').eq(0).should('contain', 'Second blog Author 2')
       cy.get('.blog').eq(1).should('contain', 'Third blog Author 3')
       cy.get('.blog').eq(2).should('contain', 'First blog Author 1')
