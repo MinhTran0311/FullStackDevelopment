@@ -39,7 +39,4 @@ export const useNotificationDispatch = () => {
   return counterAndDispatch[1];
 };
 
-// // Custom hooks for using the notification context
-// export const useNotification = () => useContext(NotificationContext);
-
 export default NotificationContext;
