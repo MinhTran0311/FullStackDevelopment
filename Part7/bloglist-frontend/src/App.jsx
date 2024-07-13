@@ -5,11 +5,9 @@ import loginService from './services/login'
 import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
-
+import LoginForm from './components/Login'
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const blogFormRef = useRef()
   const [notiMessage, setNotiMessage] = useState({
@@ -23,7 +21,6 @@ const App = () => {
       setBlogs(sortedBlogs)
     })
   }, [])
-
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -44,9 +41,7 @@ const App = () => {
     }, 5000)
   }
 
-  const handleLogin = async (event) => {
-    event.preventDefault()
-
+  const handleLogin = async ({ username, password }) => {
     try {
       const response = await loginService.login({
         username, password,
@@ -56,8 +51,6 @@ const App = () => {
         'loggedBlogappUser', JSON.stringify(response.data)
       )
       setUser(response.data)
-      setUsername('')
-      setPassword('')
     } catch (exception) {
       showMessage(exception.message, false)
     }
@@ -107,27 +100,8 @@ const App = () => {
   const loginForm = () => (<>
     <h2>Log in to application</h2>
     <Notification notiMessage={notiMessage} />
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
-          type="text"
-          id='username'
-          value={username}
-          name="Username"
-          onChange={({ target }) => setUsername(target.value)} />
-      </div>
-      <div>
-        password
-        <input
-          type="password"
-          id='password'
-          value={password}
-          name="Password"
-          onChange={({ target }) => setPassword(target.value)} />
-      </div>
-      <button type="submit" id="login-button">login</button>
-    </form></>
+    <LoginForm doLogin={handleLogin}/>
+  </>
   )
 
   const blogForm = () => (
