@@ -6,14 +6,14 @@ import Notification from './components/Notification'
 import BlogForm from './components/BlogForm'
 import Togglable from './components/Togglable'
 import LoginForm from './components/Login'
+import { useDispatch } from 'react-redux'
+import { setNotification } from './reducers/notificationReducer'
+
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState(null)
   const blogFormRef = useRef()
-  const [notiMessage, setNotiMessage] = useState({
-    message: '',
-    isSuccess: false,
-  })
+  const dispatch = useDispatch()
 
   useEffect(() => {
     blogService.getAll().then(blogs => {
@@ -31,15 +31,15 @@ const App = () => {
     }
   }, [])
 
-  const showMessage = (message, isSuccess) => {
-    setNotiMessage({
-      message: message,
-      isSuccess: isSuccess,
-    })
-    setTimeout(() => {
-      setNotiMessage({ ...notiMessage, message: null })
-    }, 5000)
-  }
+  // const showMessage = (message, isSuccess) => {
+  //   setNotiMessage({
+  //     message: message,
+  //     isSuccess: isSuccess,
+  //   })
+  //   setTimeout(() => {
+  //     setNotiMessage({ ...notiMessage, message: null })
+  //   }, 5000)
+  // }
 
   const handleLogin = async ({ username, password }) => {
     try {
@@ -52,7 +52,7 @@ const App = () => {
       )
       setUser(response.data)
     } catch (exception) {
-      showMessage(exception.message, false)
+      dispatch(setNotification(exception.message, false))
     }
   }
 
@@ -66,9 +66,9 @@ const App = () => {
       blogFormRef.current.toggleVisibility()
       const returnedBlog = await blogService.create(blogObject)
       setBlogs(blogs.concat(returnedBlog).sort((a, b) => b.likes - a.likes))
-      showMessage(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`, true)
+      dispatch(setNotification(`a new blog ${returnedBlog.title} by ${returnedBlog.author} added`, true))
     } catch (exception) {
-      showMessage(`${exception}`, false)
+      dispatch(setNotification(exception.message, false))
     }
   }
 
@@ -78,7 +78,7 @@ const App = () => {
       setBlogs(blogs.map(blog => blog.id !== id ? blog : returnedBlog).sort((a, b) => b.likes - a.likes))
       return returnedBlog
     } catch (exception) {
-      showMessage(`${exception}`, false)
+      dispatch(setNotification(exception.message, false))
     }
   }
 
@@ -92,14 +92,14 @@ const App = () => {
         setBlogs(blogs.filter((e) => e.id !== id).sort((a, b) => b.likes - a.likes))
       }
       catch(exception){
-        console.log(exception)
+        dispatch(setNotification(exception.message, false))
       }
     }
   }
 
   const loginForm = () => (<>
     <h2>Log in to application</h2>
-    <Notification notiMessage={notiMessage} />
+    <Notification />
     <LoginForm doLogin={handleLogin}/>
   </>
   )
@@ -117,7 +117,7 @@ const App = () => {
         <div>
           {blogForm()}
           <h2>blogs</h2>
-          <Notification notiMessage={notiMessage} />
+          <Notification />
           <p>{user.name} logged in <button onClick={handleLogout} id='logout-button'>logout</button></p>
           {blogs.map(blog =>
             <Blog key={blog.id}
