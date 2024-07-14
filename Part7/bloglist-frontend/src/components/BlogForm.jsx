@@ -1,18 +1,29 @@
 import PropTypes from 'prop-types'
 import { useField } from '../hook'
+import { useDispatch } from 'react-redux'
+import { createBlog } from '../reducers/blogReducer'
+import { setNotification } from '../reducers/notificationReducer'
 
-const BlogForm = ({ createBlog }) => {
+const BlogForm = () => {
   const title = useField('text', 'title')
   const author = useField('text', 'author')
   const url = useField('text', 'url')
+  const dispatch = useDispatch()
 
   const addBlog = (event) => {
     event.preventDefault()
-    createBlog({
+    const newBlog = {
       title: title.value,
       author: author.value,
       url: url.value,
-    })
+    }
+
+    try {
+      dispatch(createBlog(newBlog))
+      dispatch(setNotification(`a new blog ${newBlog.title} by ${newBlog.author} added`, true))
+    } catch (exception) {
+      dispatch(setNotification(exception.message, false))
+    }
     title.reset()
     author.reset()
     url.reset()
@@ -50,10 +61,6 @@ const BlogForm = ({ createBlog }) => {
       <button type="submit">save</button>
     </form>
   )
-}
-
-BlogForm.propTypes = {
-  createBlog: PropTypes.func.isRequired,
 }
 
 export default BlogForm

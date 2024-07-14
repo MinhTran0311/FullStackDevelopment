@@ -18,6 +18,7 @@ const LoginForm = ({ doLogin }) => {
         <input
           value={username.value}
           onChange={username.onChange}
+          type={username.type}
           id={username.id}
         />
       </div>
@@ -26,6 +27,7 @@ const LoginForm = ({ doLogin }) => {
         <input
           value={password.value}
           onChange={password.onChange}
+          type={password.type}
           id={password.id}
         />
       </div>
