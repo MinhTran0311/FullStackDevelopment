@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams, Link } from 'react-router-dom'
 import { initializeUsers } from '../reducers/usersReducer'
+import { Container, Typography, List, ListItem } from '@mui/material'
 
 const User = () => {
   const dispatch = useDispatch()
@@ -19,15 +20,23 @@ const User = () => {
   }
 
   return (
-    <div>
-      <h2>{user.name}</h2>
-      <h3>added blogs</h3>
-      <ul>
+    <Container>
+      <Typography variant="h4" component="h1" gutterBottom>
+        {user.name}
+      </Typography>
+      <Typography variant="h5" component="h2" gutterBottom>
+        Added Blogs
+      </Typography>
+      <List>
         {user.blogs.map((blog) => (
-          <li key={blog.id}><Link to={`/blogs/${blog.id}`}>{blog.title}</Link></li>
+          <ListItem key={blog.id}>
+            <Link to={`/blogs/${blog.id}`}>
+              {blog.title}
+            </Link>
+          </ListItem>
         ))}
-      </ul>
-    </div>
+      </List>
+    </Container>
   )
 }
 

@@ -2,6 +2,7 @@ import { useField } from '../hook'
 import { useDispatch } from 'react-redux'
 import { createBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
+import { Box, TextField, Button } from '@mui/material'
 
 const BlogForm = () => {
   const title = useField('text', 'title')
@@ -29,36 +30,44 @@ const BlogForm = () => {
   }
 
   return (
-    <form onSubmit={addBlog}>
-      <div>
-        title
-        <input
+    <Box component="form" onSubmit={addBlog} sx={{ mt: 2, mb: 2 }}>
+      <Box sx={{ mb: 2 }}>
+        <TextField
+          fullWidth
+          label="Title"
           value={title.value}
           onChange={title.onChange}
           id={title.id}
           placeholder="title"
+          variant="outlined"
         />
-      </div>
-      <div>
-        author
-        <input
+      </Box>
+      <Box sx={{ mb: 2 }}>
+        <TextField
+          fullWidth
+          label="Author"
           value={author.value}
           onChange={author.onChange}
           id={author.id}
           placeholder="author"
+          variant="outlined"
         />
-      </div>
-      <div>
-        url
-        <input
+      </Box>
+      <Box sx={{ mb: 2 }}>
+        <TextField
+          fullWidth
+          label="URL"
           value={url.value}
           onChange={url.onChange}
           id={url.id}
           placeholder="url"
+          variant="outlined"
         />
-      </div>
-      <button type="submit">save</button>
-    </form>
+      </Box>
+      <Button variant="contained" color="primary" type="submit">
+      Save
+      </Button>
+    </Box>
   )
 }
 

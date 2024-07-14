@@ -5,6 +5,7 @@ import blogService from '../services/blogs'
 import loginService from '../services/login'
 import { useDispatch } from 'react-redux'
 import { TextField, Button, Box, Typography } from '@mui/material'
+import Notification from './Notification'
 
 const LoginForm = ({ doLogin }) => {
   const username = useField('text', 'username')
@@ -31,6 +32,10 @@ const LoginForm = ({ doLogin }) => {
 
   return (
     <Box component="form" onSubmit={handleLogin} sx={{ mt: 3 }}>
+      <Typography variant="h4" component="h1" gutterBottom>
+        Welcom to the blog application
+      </Typography>
+      <Notification />
       <Typography variant="h4" component="h1" gutterBottom>
       Log in
       </Typography>

@@ -16,6 +16,7 @@ import Users from './components/Users'
 import Blog from './components/Blog'
 import User from './components/User'
 import { initializeUsers } from './reducers/usersReducer'
+import { Box, Container, Typography } from '@mui/material'
 
 const App = () => {
   const user = useSelector((state) => state.user)
@@ -37,13 +38,19 @@ const App = () => {
   }, [])
 
   const blogPage = () => (
-    <>
-      <Togglable buttonLabel="new blog" ref={blogFormRef}>
-        <BlogForm />
-      </Togglable>
-      <Notification />
-      <BlogList />
-    </>
+    <Container>
+      <Box sx={{ mt: 4, mb: 4 }}>
+        <Togglable buttonLabel="new blog" ref={blogFormRef}>
+          <BlogForm />
+        </Togglable>
+      </Box>
+      <Box sx={{ mb: 4 }}>
+        <Notification />
+      </Box>
+      <Box>
+        <BlogList />
+      </Box>
+    </Container>
   )
 
   const blogs = useSelector((state) => {
@@ -53,15 +60,10 @@ const App = () => {
   return (
     <div>
       {user === null ? (
-        <>
-          <h2>Log in to application</h2>
-          <Notification />
-          <LoginForm />
-        </>
+        <LoginForm />
       ) : (
         <div>
           <Menu />
-          <h2>Blogs app</h2>
           <Routes>
             <Route path="/" element={blogPage()} />
             <Route path="/users" element={<Users />} />

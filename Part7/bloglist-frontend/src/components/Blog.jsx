@@ -3,6 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { updateBlog, deleteBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import { useField } from '../hook'
+import { Container, Typography, Button, TextField, Box, List, ListItem, Divider } from '@mui/material'
+import React from 'react'
 
 const Blog = () => {
   const { id } = useParams()
@@ -62,34 +64,47 @@ const Blog = () => {
   const isAuthor = currentUser && blog.user.username === currentUser.username
   console.log(blog)
   return (
-    <div className="blog">
-      <h1>
-        {blog.title} {blog.author}
-      </h1>
-      <p>{blog.url}</p>
-      <p>
-        {blog.likes} <button onClick={handleLike}>like</button>
-      </p>
-      <p>added by: {blog.user.username}</p>
-      {isAuthor && <button onClick={handleDelete}>remove</button>}
-      <div>
-        <h3>comments</h3>
+    <Container>
+      <Typography variant="h4" component="h1" gutterBottom>
+        {blog.title} by {blog.author}
+      </Typography>
+      <Typography variant="body1">{blog.url}</Typography>
+      <Box mt={2}>
+        <Typography variant="body1">
+          {blog.likes} likes <Button variant="contained" color="primary" onClick={handleLike}>like</Button>
+        </Typography>
+      </Box>
+      <Typography variant="body1">added by: {blog.user.username}</Typography>
+      {isAuthor && (
+        <Box mt={2}>
+          <Button variant="contained" color="secondary" onClick={handleDelete}>remove</Button>
+        </Box>
+      )}
+      <Box mt={4}>
+        <Typography variant="h5" component="h2">Comments</Typography>
         <form onSubmit={handleSubmit}>
-          <input
+          <TextField
+            fullWidth
             value={comment.value}
             onChange={comment.onChange}
             type={comment.type}
             id={comment.id}
+            label="Add a comment"
+            variant="outlined"
+            margin="normal"
           />
-          <button type="submit">add comment</button>
+          <Button variant="contained" color="primary" type="submit">add comment</Button>
         </form>
-        {blog.comments && <ul>
-          {blog.comments.map((comment) => (
-            <li key={commentId++}>{comment}</li>
+        <List>
+          {blog.comments && blog.comments.map((comment, index) => (
+            <React.Fragment key={index}>
+              <ListItem>{comment}</ListItem>
+              {index < blog.comments.length - 1 && <Divider />}
+            </React.Fragment>
           ))}
-        </ul>}
-      </div>
-    </div>
+        </List>
+      </Box>
+    </Container>
   )
 }
 
