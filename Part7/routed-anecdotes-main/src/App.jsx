@@ -76,7 +76,7 @@ const CreateNew = (props) => {
       info: info.value,
       votes: 0
     })
-    props.setNotification(`A new anecdote "${content}" by ${author} added!`)
+    props.setNotification(`A new anecdote "${content.value}" by ${author.value} added!`)
     setTimeout(() => {
       props.setNotification('')
     }, 5000)
