@@ -4,6 +4,8 @@ import { setUser } from '../reducers/userReducer'
 import blogService from '../services/blogs'
 import loginService from '../services/login'
 import { useDispatch } from 'react-redux'
+import { TextField, Button, Box, Typography } from '@mui/material'
+
 const LoginForm = ({ doLogin }) => {
   const username = useField('text', 'username')
   const password = useField('password', 'password')
@@ -28,29 +30,40 @@ const LoginForm = ({ doLogin }) => {
   }
 
   return (
-    <form onSubmit={handleLogin}>
-      <div>
-        username
-        <input
+    <Box component="form" onSubmit={handleLogin} sx={{ mt: 3 }}>
+      <Typography variant="h4" component="h1" gutterBottom>
+      Log in
+      </Typography>
+      <Box sx={{ mb: 2 }}>
+        <TextField
+          fullWidth
+          label="Username"
           value={username.value}
           onChange={username.onChange}
           type={username.type}
           id={username.id}
         />
-      </div>
-      <div>
-        password
-        <input
+      </Box>
+      <Box sx={{ mb: 2 }}>
+        <TextField
+          fullWidth
+          label="Password"
           value={password.value}
           onChange={password.onChange}
           type={password.type}
           id={password.id}
         />
-      </div>
-      <button type="submit" id="login-button">
-        login
-      </button>
-    </form>
+      </Box>
+      <Button
+        variant="contained"
+        color="primary"
+        type="submit"
+        id="login-button"
+        fullWidth
+      >
+      Login
+      </Button>
+    </Box>
   )
 }
 

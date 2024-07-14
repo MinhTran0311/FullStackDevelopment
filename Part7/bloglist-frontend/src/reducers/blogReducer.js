@@ -40,9 +40,8 @@ export const createBlog = (content) => {
   }
 }
 
-export const likeBlog = (blogToChange) => {
+export const updateBlog = (blogToChange) => {
   return async (dispatch) => {
-    // const updatedBlog = { ...blogToChange, votes: blogToChange.votes + 1 }
     const returnedBlog = await blogService.update(
       blogToChange.id,
       blogToChange
