@@ -1,9 +1,11 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { likeBlog, deleteBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 
-const Blog = ({ isAuthor, blog }) => {
+const Blog = ({ blog }) => {
+  const currentUser = useSelector((state) => state.user)
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -21,7 +23,6 @@ const Blog = ({ isAuthor, blog }) => {
 
   const handleLike = async () => {
     try {
-      // const updatedBlog = { ...blog, likes: blog.likes + 1 }
       dispatch(
         likeBlog({
           id: blog.id,
@@ -44,6 +45,9 @@ const Blog = ({ isAuthor, blog }) => {
       dispatch(setNotification(exception.message, false))
     }
   }
+
+  const isAuthor = currentUser && blog.user.username === currentUser.username
+
 
   if (!isShow) {
     return (
