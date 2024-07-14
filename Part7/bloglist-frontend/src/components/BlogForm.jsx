@@ -20,7 +20,12 @@ const BlogForm = () => {
 
     try {
       dispatch(createBlog(newBlog))
-      dispatch(setNotification(`a new blog ${newBlog.title} by ${newBlog.author} added`, true))
+      dispatch(
+        setNotification(
+          `a new blog ${newBlog.title} by ${newBlog.author} added`,
+          true
+        )
+      )
     } catch (exception) {
       dispatch(setNotification(exception.message, false))
     }
@@ -65,7 +70,7 @@ const BlogForm = () => {
         />
       </Box>
       <Button variant="contained" color="primary" type="submit">
-      Save
+        Save
       </Button>
     </Box>
   )

@@ -10,7 +10,15 @@ const BlogList = () => {
   return (
     <Box>
       {blogs.map((blog) => (
-        <Box key={blog.id} sx={{ border: '1px solid grey', borderRadius: 2, padding: 2, marginBottom: 2 }}>
+        <Box
+          key={blog.id}
+          sx={{
+            border: '1px solid grey',
+            borderRadius: 2,
+            padding: 2,
+            marginBottom: 2,
+          }}
+        >
           <Link to={`/blogs/${blog.id}`} color="inherit">
             <Typography variant="h6" component="span">
               {blog.title}

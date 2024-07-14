@@ -16,11 +16,13 @@ const LoginForm = ({ doLogin }) => {
     event.preventDefault()
     try {
       const response = await loginService.login({
-        username: username.value, password: password.value,
+        username: username.value,
+        password: password.value,
       })
       blogService.setToken(response.data.token)
       window.localStorage.setItem(
-        'loggedBlogappUser', JSON.stringify(response.data)
+        'loggedBlogappUser',
+        JSON.stringify(response.data)
       )
       dispatch(setUser(response.data))
     } catch (exception) {
@@ -37,7 +39,7 @@ const LoginForm = ({ doLogin }) => {
       </Typography>
       <Notification />
       <Typography variant="h4" component="h1" gutterBottom>
-      Log in
+        Log in
       </Typography>
       <Box sx={{ mb: 2 }}>
         <TextField
@@ -66,7 +68,7 @@ const LoginForm = ({ doLogin }) => {
         id="login-button"
         fullWidth
       >
-      Login
+        Login
       </Button>
     </Box>
   )
