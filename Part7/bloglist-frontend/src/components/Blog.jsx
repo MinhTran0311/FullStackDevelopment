@@ -1,25 +1,16 @@
-import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useParams, useNavigate } from 'react-router-dom'
 import { likeBlog, deleteBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 
-const Blog = ({ blog }) => {
+const Blog = () => {
+  const { id } = useParams()
+  const blogs = useSelector((state) => state.blogs)
+  const blog = blogs.find((blog) => blog.id === id)
   const currentUser = useSelector((state) => state.user)
 
-  const blogStyle = {
-    paddingTop: 10,
-    paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5,
-  }
   const dispatch = useDispatch()
-
-  const [isShow, setIsShow] = useState(false)
-
-  const toggleVisibility = (event) => {
-    setIsShow(!isShow)
-  }
+  const navigate = useNavigate()
 
   const handleLike = async () => {
     try {
@@ -41,34 +32,25 @@ const Blog = ({ blog }) => {
   const handleDelete = async () => {
     try {
       dispatch(deleteBlog(blog.id))
+      navigate('/')
+
     } catch (exception) {
       dispatch(setNotification(exception.message, false))
     }
   }
 
   const isAuthor = currentUser && blog.user.username === currentUser.username
-
-
-  if (!isShow) {
-    return (
-      <div style={blogStyle} className="blog">
-        {blog.title} {blog.author}{' '}
-        <button onClick={toggleVisibility}>{isShow ? 'hide' : 'view'}</button>
-      </div>
-    )
-  }
-
+  console.log(blog)
   return (
-    <div style={blogStyle} className="blog">
+    <div className="blog">
+      <h1>
+        {blog.title} {blog.author}
+      </h1>
+      <p>{blog.url}</p>
       <p>
-        title: {blog.title}{' '}
-        <button onClick={toggleVisibility}>{isShow ? 'hide' : 'view'}</button>
+        {blog.likes} <button onClick={handleLike}>like</button>
       </p>
-      <p>url: {blog.url}</p>
-      <p>
-        likes: {blog.likes} <button onClick={handleLike}>like</button>
-      </p>
-      <p>author: {blog.author}</p>
+      <p>added by: {blog.user.username}</p>
       {isAuthor && <button onClick={handleDelete}>remove</button>}
     </div>
   )

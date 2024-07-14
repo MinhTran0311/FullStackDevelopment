@@ -14,6 +14,8 @@ import {
 } from 'react-router-dom'
 import Users from './components/Users'
 import Blog from './components/Blog'
+import User from './components/User'
+import { initializeUsers } from './reducers/usersReducer'
 
 const App = () => {
   const user = useSelector((state) => state.user)
@@ -22,7 +24,8 @@ const App = () => {
 
   useEffect(() => {
     dispatch(initializeBlogs())
-  }, [])
+    dispatch(initializeUsers())
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
@@ -47,11 +50,6 @@ const App = () => {
     return [...state.blogs]
   })
 
-  const match = useMatch('/anecdotes/:id')
-  const blog = match
-    ? blogs.find(note => note.id === Number(match.params.id))
-    : null
-
   return (
     <div>
       {user === null ? (
@@ -67,7 +65,8 @@ const App = () => {
           <Routes>
             <Route path="/" element={blogPage()} />
             <Route path="/users" element={<Users />} />
-            <Route path="/blogs/:id" element={<Blog blog={blog} />} />
+            <Route path="/blogs/:id" element={<Blog />} />
+            <Route path="/users/:id" element={<User />} />
           </Routes>
         </div>
       )}

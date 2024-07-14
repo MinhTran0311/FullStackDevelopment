@@ -16,10 +16,10 @@ const Menu = () => {
   }
 
   return (
-    <div>
+    <div style={{ backgroundColor: 'grey', padding: '10px' }}>
       <Link style={padding} to="/">blogs</Link>
       <Link style={padding} to="/users">users</Link>
-      {user.name} logged in
+      {user.name} logged in {' '}
       <button onClick={handleLogout} id="logout-button">
               logout
       </button>
